@@ -261,3 +261,88 @@ async function updateDashboard() {
 // Initial fetch and set interval
 updateDashboard();
 setInterval(updateDashboard, 2000);
+
+// --- Shortcuts / Quick Links Logic ---
+const STORAGE_KEY = 'go_monitor_shortcuts';
+
+function getShortcuts() {
+    try {
+        const stored = localStorage.getItem(STORAGE_KEY);
+        return stored ? JSON.parse(stored) : [
+            { name: 'OpenClaw Gateway', url: 'http://localhost:18789' }
+        ];
+    } catch (e) {
+        return [];
+    }
+}
+
+function saveShortcuts(shortcuts) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(shortcuts));
+}
+
+function renderShortcuts() {
+    const listEl = document.getElementById('shortcuts-list');
+    if (!listEl) return;
+    
+    const shortcuts = getShortcuts();
+    listEl.innerHTML = '';
+    
+    if (shortcuts.length === 0) {
+        listEl.innerHTML = '<div style="color: var(--text-secondary); font-size: 0.85rem; text-align: center; padding: 1rem 0;">No hay enlaces guardados.</div>';
+        return;
+    }
+    
+    shortcuts.forEach((item, index) => {
+        const div = document.createElement('div');
+        div.className = 'shortcut-item';
+        div.innerHTML = `
+            <a href="${item.url}" target="_blank" class="shortcut-link">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink: 0;">
+                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                    <polyline points="15 3 21 3 21 9" />
+                    <line x1="10" y1="14" x2="21" y2="3" />
+                </svg>
+                <span>${item.name}</span>
+            </a>
+            <button class="btn-delete" data-index="${index}">&times;</button>
+        `;
+        listEl.appendChild(div);
+    });
+
+    listEl.querySelectorAll('.btn-delete').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const index = parseInt(e.target.getAttribute('data-index'));
+            const shortcuts = getShortcuts();
+            shortcuts.splice(index, 1);
+            saveShortcuts(shortcuts);
+            renderShortcuts();
+        });
+    });
+}
+
+document.getElementById('add-shortcut-form').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const nameInput = document.getElementById('shortcut-name');
+    const urlInput = document.getElementById('shortcut-url');
+    
+    let url = urlInput.value.trim();
+    const name = nameInput.value.trim();
+    
+    if (/^\d+$/.test(url)) {
+        url = `http://localhost:${url}`;
+    } else if (!/^https?:\/\//i.test(url)) {
+        url = `http://${url}`;
+    }
+    
+    const shortcuts = getShortcuts();
+    shortcuts.push({ name, url });
+    saveShortcuts(shortcuts);
+    
+    nameInput.value = '';
+    urlInput.value = '';
+    
+    renderShortcuts();
+});
+
+renderShortcuts();
+

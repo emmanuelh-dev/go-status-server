@@ -179,6 +179,29 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Shortcuts / Quick Links Card -->
+            <div class="card" id="links-card">
+                <div class="card-header">
+                    <div class="header-title">
+                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
+                            <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
+                        </svg>
+                        <span>Enlaces Rápidos</span>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div id="shortcuts-list" class="shortcuts-list">
+                        <!-- Links will be generated here -->
+                    </div>
+                    <form id="add-shortcut-form" class="shortcut-form">
+                        <input type="text" id="shortcut-name" placeholder="Nombre (ej. OpenClaw)" required>
+                        <input type="text" id="shortcut-url" placeholder="URL o puerto (ej. 18789)" required>
+                        <button type="submit" class="btn-add">Agregar</button>
+                    </form>
+                </div>
+            </div>
         </main>
 
         <footer>

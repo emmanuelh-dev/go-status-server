@@ -382,6 +382,104 @@ header {
     display: block;
 }
 
+/* Shortcuts styles */
+.shortcuts-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    max-height: 180px;
+    overflow-y: auto;
+    padding-right: 4px;
+}
+
+.shortcut-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--card-border);
+    padding: 0.6rem 0.9rem;
+    border-radius: 12px;
+    transition: background 0.2s, border-color 0.2s;
+}
+
+.shortcut-item:hover {
+    background: rgba(255, 255, 255, 0.07);
+    border-color: rgba(255, 255, 255, 0.15);
+}
+
+.shortcut-link {
+    color: var(--text-primary);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-grow: 1;
+}
+
+.shortcut-link:hover {
+    color: #a5b4fc;
+}
+
+.btn-delete {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+    cursor: pointer;
+    padding: 2px 6px;
+    border-radius: 4px;
+    transition: color 0.2s, background 0.2s;
+}
+
+.btn-delete:hover {
+    color: var(--danger);
+    background: rgba(239, 68, 68, 0.1);
+}
+
+.shortcut-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    border-top: 1px dashed var(--card-border);
+    padding-top: 1rem;
+}
+
+.shortcut-form input {
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid var(--card-border);
+    color: var(--text-primary);
+    padding: 0.5rem 0.75rem;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 0.85rem;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.shortcut-form input:focus {
+    border-color: var(--primary);
+}
+
+.btn-add {
+    background: var(--primary);
+    border: none;
+    color: #ffffff;
+    padding: 0.5rem;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: background 0.2s;
+}
+
+.btn-add:hover {
+    background: #2563eb;
+}
+
 /* Footer */
 footer {
     display: flex;
