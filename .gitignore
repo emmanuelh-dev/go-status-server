@@ -1,0 +1,9 @@
+go-monitor
+.DS_Store
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out

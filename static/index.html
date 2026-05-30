@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Go-Monitor | Estatus del Sistema</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="glow-bg"></div>
+    <div class="container">
+        <header>
+            <div class="logo-area">
+                <div class="pulse-indicator"></div>
+                <h1>Go-Monitor</h1>
+            </div>
+            <div class="system-meta" id="system-meta">
+                Cargando metadatos del host...
+            </div>
+        </header>
+
+        <main class="dashboard-grid">
+            <!-- CPU Card -->
+            <div class="card" id="cpu-card">
+                <div class="card-header">
+                    <div class="header-title">
+                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="4" y="4" width="16" height="16" rx="2" />
+                            <path d="M9 9h6v6H9z" />
+                            <path d="M9 1v3M15 1v3M9 20v3M15 20v3M20 9h3M20 15h3M1 9h3M1 15h3" />
+                        </svg>
+                        <span>CPU</span>
+                    </div>
+                    <span class="badge" id="cpu-cores">-- Cores</span>
+                </div>
+                <div class="card-body">
+                    <div class="radial-progress-container">
+                        <svg class="radial-progress" viewBox="0 0 100 100">
+                            <circle class="bg" cx="50" cy="50" r="40"></circle>
+                            <circle class="fg" id="cpu-radial-fg" cx="50" cy="50" r="40"></circle>
+                        </svg>
+                        <div class="radial-label">
+                            <span class="value" id="cpu-usage-val">0%</span>
+                            <span class="subtitle" id="cpu-model">Detectando...</span>
+                        </div>
+                    </div>
+                    <div class="trend-chart-container">
+                        <canvas id="cpu-trend" class="trend-canvas"></canvas>
+                    </div>
+                    <div class="core-grid" id="core-grid">
+                        <!-- Core bars will be generated here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- RAM Card -->
+            <div class="card" id="ram-card">
+                <div class="card-header">
+                    <div class="header-title">
+                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M6 3h12a3 3 0 0 1 3 3v12a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3V6a3 3 0 0 1 3-3z" />
+                            <path d="M10 3v18M14 3v18M3 8h18M3 16h18" />
+                        </svg>
+                        <span>Memoria RAM</span>
+                    </div>
+                    <span class="badge" id="ram-percent">0%</span>
+                </div>
+                <div class="card-body">
+                    <div class="progress-bar-container">
+                        <div class="progress-bar-fill" id="ram-bar" style="width: 0%"></div>
+                    </div>
+                    <div class="trend-chart-container">
+                        <canvas id="ram-trend" class="trend-canvas"></canvas>
+                    </div>
+                    <div class="stats-row">
+                        <div class="stat-item">
+                            <span class="stat-label">Usada</span>
+                            <span class="stat-val" id="ram-used">0 GB</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Disponible</span>
+                            <span class="stat-val" id="ram-available">0 GB</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Total</span>
+                            <span class="stat-val" id="ram-total">0 GB</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Disk Card -->
+            <div class="card" id="disk-card">
+                <div class="card-header">
+                    <div class="header-title">
+                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M22 12H2M22 5H2M22 19H2" stroke-linecap="round" />
+                        </svg>
+                        <span>Almacenamiento (/)</span>
+                    </div>
+                    <span class="badge" id="disk-percent">0%</span>
+                </div>
+                <div class="card-body">
+                    <div class="progress-bar-container">
+                        <div class="progress-bar-fill" id="disk-bar" style="width: 0%"></div>
+                    </div>
+                    <div class="stats-row">
+                        <div class="stat-item">
+                            <span class="stat-label">Usado</span>
+                            <span class="stat-val" id="disk-used">0 GB</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Libre</span>
+                            <span class="stat-val" id="disk-free">0 GB</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Total</span>
+                            <span class="stat-val" id="disk-total">0 GB</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Network Card -->
+            <div class="card" id="network-card">
+                <div class="card-header">
+                    <div class="header-title">
+                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12.55a11 11 0 0 1 14.08 0" />
+                            <path d="M1.42 9a16 16 0 0 1 21.16 0" />
+                            <path d="M8.53 16.11a6 6 0 0 1 6.95 0" />
+                            <line x1="12" y1="20" x2="12.01" y2="20" stroke-linecap="round" />
+                        </svg>
+                        <span>Red (Tránsito)</span>
+                    </div>
+                    <span class="badge" id="net-total">Sent: 0 / Recv: 0</span>
+                </div>
+                <div class="card-body">
+                    <div class="stats-row" style="grid-template-columns: 1fr 1fr;">
+                        <div class="stat-item">
+                            <span class="stat-label">↓ Descarga</span>
+                            <span class="stat-val" id="net-down-rate">0 KB/s</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">↑ Carga</span>
+                            <span class="stat-val" id="net-up-rate">0 KB/s</span>
+                        </div>
+                    </div>
+                    <div class="trend-chart-container">
+                        <canvas id="net-trend" class="trend-canvas"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Battery Card -->
+            <div class="card" id="battery-card">
+                <div class="card-header">
+                    <div class="header-title">
+                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="2" y="7" width="16" height="10" rx="2" ry="2" />
+                            <line x1="22" y1="11" x2="22" y2="13" />
+                        </svg>
+                        <span>Batería</span>
+                    </div>
+                    <span class="badge" id="battery-status">N/A</span>
+                </div>
+                <div class="card-body battery-body">
+                    <div class="battery-visual-container">
+                        <div class="battery-shell">
+                            <div class="battery-level" id="battery-level" style="width: 0%"></div>
+                            <div class="battery-percentage" id="battery-percent">0%</div>
+                        </div>
+                    </div>
+                    <div class="battery-status-text" id="battery-status-text">
+                        Sin batería detectada (o dispositivo de escritorio)
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <div class="update-rate">Actualizando cada 2s</div>
+            <div class="credits">Desarrollado en Go • <span id="uptime-val">Uptime: --</span></div>
+        </footer>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>
